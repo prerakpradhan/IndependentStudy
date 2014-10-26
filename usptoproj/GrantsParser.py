@@ -55,51 +55,7 @@ class GrantsParser:
         self.priClaim=[]
         self.priClaimsList=[]
 
-        # international classification
-        self.iClassVersionDate=''
-        self.iClassLevel=''
-        self.iClassSec='' #section
-        self.iClassCls='' #mainclass
-        self.iClassSub='' #subclass
-        self.iClassMgr='' #main group
-        self.iClassSgr='' #subgroup 
-        self.iClassSps='' #symbol position
-        self.iClassVal='' # classification value
-        self.iClassActionDate=''
-        self.iClassGnr=''  # generating office
-        self.iClassStatus='' #status
-        self.iClassDS=''  #data source
-        self.iClassList=[]
-
-        #national classification
-        self.nClassCountry=''
-        self.nClassMain=''
-        self.nSubclass=''
-        self.nClassInfo=''   #mainClass=nClassInfo[0:3] subClass=nClassInfo[3:len(nClassInfo)]
-        self.nClassList=[]
-
         self.title=''
-
-        # citations
-        self.ctNum=''
-        self.pctCountry=''  # pct : patent citation
-        self.pctDocNo=''
-        self.pctKind=''
-        self.pctName=''
-        self.pctDate=''
-        self.pctCategory=''
-        self.pctClassNation=''
-        self.pctClassMain=''
-        self.pctClassList=[]
-        self.pcitation=[]
-        self.pcitationsList=[]  # list of ALL pcitation
-        self.pcitationsList_US=[]
-        self.pcitationsList_FC=[]
-
-        self.npctDoc=''
-        self.npctCategory=''
-        self.npcitation=[]
-        self.npcitationsList=[] # list of npcitation
 
         self.claimsNum=''
         self.figuresNum=''
@@ -119,33 +75,6 @@ class GrantsParser:
         self.inventor=[]
         self.inventorsList=[]
 
-        # attorney
-        # attorney maybe organizations or, one or more than one person
-        self.atnSequence=''
-        self.atnLastName=''
-        self.atnFirstName=''
-        self.atnOrgName=''   
-        self.atnCountry=''
-        self.attorney=[]
-        self.attorneyList=[]
-    
-        #assignee
-        self.asnSequence=''
-        self.asnOrgName=''
-        self.asnRole=''
-        self.asnCity=''
-        self.asnState=''
-        self.asnCountry=''
-        self.assignee=[]
-        self.assigneeList=[]
-
-        #examiners
-        #primary-examiner & assistant-examiner
-        self.exmLastName=''
-        self.exmFirstName=''
-        self.exmDepartment=''
-        self.examiner=[]
-        self.examinerList=[]
 
         self.abstract=''
         self.claims=''
@@ -550,127 +479,10 @@ class GrantsParser:
         IGNORE INTO TABLE uspto_patents.GRANTS        FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
         """.format(filePath=self.csvPath_grant.replace('\\','/')))
 
-        print '***** EXAMINER *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.EXAMINER_G        FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_examiner.replace('\\','/')))
-
-        print '***** AGENT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.AGENT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_agent.replace('\\','/')))
-
-        print '***** ASSIGNEE *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.ASSIGNEE_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_assignee.replace('\\','/')))
-
-        print '***** INVENTOR *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.INVENTOR_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_inventor.replace('\\','/')))
-
-        print '***** PUBCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.PUBCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_pubcit.replace('\\','/')))
-
-        print '***** GRACIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.GRACIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_gracit.replace('\\','/')))
-
-        print '***** FORPATCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.FORPATCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_forpatcit.replace('\\','/')))
-
-        print '***** NONPATCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.NONPATCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_nonpatcit.replace('\\','/')))
-
-        print '***** USCLASS *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.USCLASS_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_usclass.replace('\\','/')))
-
-        print '***** INTCLASS *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.INTCLASS_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_intclass.replace('\\','/')))
-
         print self.processor.load("""SET foreign_key_checks = 1;""")
         self.processor.close()
         print '[Loaded CSV files. Time:{0}'.format(time.time()-st)
 
-    #loda csv files _update    
-    def loadCSV_update(self,suffix):
-        print '- Starting load CSV files_update.'
-        st=time.time()
-        self.processor=MySQLProcessor.MySQLProcess()
-        self.processor.connect()
-
-        print self.processor.load("""SET foreign_key_checks = 0;""")
-
-        print '***** GRANT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.GRANTS        FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_grant.replace('\\','/')+suffix))
-
-        print '***** EXAMINER *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.EXAMINER_G        FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_examiner.replace('\\','/')+suffix))
-
-        print '***** AGENT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.AGENT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_agent.replace('\\','/')+suffix))
-
-        print '***** ASSIGNEE *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.ASSIGNEE_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_assignee.replace('\\','/')+suffix))
-
-        print '***** INVENTOR *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.INVENTOR_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_inventor.replace('\\','/')+suffix))
-
-        print '***** PUBCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.PUBCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_pubcit.replace('\\','/')+suffix))
-
-        print '***** GRACIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.GRACIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_gracit.replace('\\','/')+suffix))
-
-        print '***** FORPATCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.FORPATCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_forpatcit.replace('\\','/')+suffix))
-
-        print '***** NONPATCIT *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.NONPATCIT_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_nonpatcit.replace('\\','/')+suffix))
-
-        print '***** USCLASS *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.USCLASS_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_usclass.replace('\\','/')+suffix))
-
-        print '***** INTCLASS *****'
-        print self.processor.load("""LOAD DATA LOCAL INFILE '{filePath}'
-        IGNORE INTO TABLE uspto_patents.INTCLASS_G      FIELDS TERMINATED BY '\\t'        OPTIONALLY ENCLOSED BY '\"'        LINES TERMINATED BY '\\n';
-        """.format(filePath=self.csvPath_intclass.replace('\\','/')+suffix))
-
-        print self.processor.load("""SET foreign_key_checks = 1;""")
-        self.processor.close()
-        print '[Loaded CSV files_update. Time:{0}'.format(time.time()-st)
 
 def partTen(bList):
     n=10
