@@ -1,23 +1,9 @@
 import MySQLdb
 
 class MySQLProcess:
-    """
-    UPET(USPTO Patent Exploring Tool)
-        provides Python code for downloading, parsing, and loading USPTO patent bulk data into a local MySQL database.
-    Website:
-        http://abel.lis.illinois.edu/upet/
-    Authors:
-        Qiyuan Liu (http://liuqiyuan.com, qliu14@illinois.edu),
-        Vetle I. Torvik (http://people.lis.illinois.edu/~vtorvik/, vtorvik@illinois.edu)
-    Updated:
-        12/09/2012
-    """
-    """
-    Used to operate the MySQL database.
-    Remind to replace the arguments in the following funciton '__init__' with your own database parameters
-    """
-    def __init__(self, host="uspto-db.cniiyfnr7znr.us-west-2.rds.amazonaws.com", port=3306,user="master", passwd="password",db="uspto_patents", charset="utf8"):
-        # host="127.0.0.1", port=3306,user="root", passwd="LIUqiyuan",db="qliu14", charset="utf8"
+
+    def __init__(self, host="uspto-db.cniiyfnr7znr.us-west-2.rds.amazonaws.com", port=3306,user="", passwd="",db="uspto_patents", charset="utf8"):
+        # host="127.0.0.1", port=3306,user="", passwd="",db="qliu14", charset="utf8"
         # host="127.0.0.1", port=3306,user="qliu14", passwd="qliu14password",db="qliu14", charset="utf8"
         self._host = host
         self._port = port
